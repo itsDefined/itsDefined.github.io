@@ -1,0 +1,114 @@
+[
+  {
+    "name": "DATS24_160x600_FR_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 160,
+    "height": 600,
+    "language": "FR"
+  },
+  {
+    "name": "DATS24_160x600_NL_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 160,
+    "height": 600,
+    "language": "NL"
+  },
+  {
+    "name": "DATS24_300x250_FR_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 300,
+    "height": 250,
+    "language": "FR"
+  },
+  {
+    "name": "DATS24_300x250_NL_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 300,
+    "height": 250,
+    "language": "NL"
+  },
+  {
+    "name": "DATS24_300x600_FR_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 300,
+    "height": 600,
+    "language": "FR"
+  },
+  {
+    "name": "DATS24_300x600_NL_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 300,
+    "height": 600,
+    "language": "NL"
+  },
+  {
+    "name": "DATS24_320x100_FR_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 320,
+    "height": 100,
+    "language": "FR"
+  },
+  {
+    "name": "DATS24_320x100_NL_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 320,
+    "height": 100,
+    "language": "NL"
+  },
+  {
+    "name": "DATS24_320x50_FR_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 320,
+    "height": 50,
+    "language": "FR"
+  },
+  {
+    "name": "DATS24_320x50_NL_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 320,
+    "height": 50,
+    "language": "NL"
+  },
+  {
+    "name": "DATS24_970x250_FR_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 970,
+    "height": 250,
+    "language": "FR"
+  },
+  {
+    "name": "DATS24_970x250_NL_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 970,
+    "height": 250,
+    "language": "NL"
+  },
+  {
+    "name": "DATS24_970x90_FR_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 970,
+    "height": 90,
+    "language": "FR"
+  },
+  {
+    "name": "DATS24_970x90_NL_Native-Article",
+    "campaign": "DATS24",
+    "theme": "Native-Article",
+    "width": 970,
+    "height": 90,
+    "language": "NL"
+  }
+]
