@@ -6,7 +6,6 @@ class Preview {
     this._bindSelectors();
     this._bindEvents();
     this._getData();
-    // _loadFormat will be called after links are populated in _appendLinks
   }
 
   _getData(){
@@ -37,23 +36,26 @@ class Preview {
     });
 
     Object.keys(groups).forEach(lang => {
+      const languageDiv = document.createElement('div');
+      languageDiv.className = 'language';
+      container.appendChild(languageDiv);
       const h1 = document.createElement('h1');
       h1.textContent = lang;
-      container.appendChild(h1);
+      languageDiv.appendChild(h1);
 
       const ul = document.createElement('ul');
       groups[lang].forEach(item => {
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.href = `banners/${item.name}/index.html`;
-        a.className = 'done';
+        a.className = 'asset-link';
         a.textContent = item.name;
         a.dataset.width = item.width;
         a.dataset.height = item.height;
         li.appendChild(a);
         ul.appendChild(li);
       });
-      container.appendChild(ul);
+      languageDiv.appendChild(ul);
     });
 
     // Re-bind selectors and events after links are added
@@ -67,6 +69,7 @@ class Preview {
   _bindSelectors() {
     this.links = Array.prototype.slice.call(document.querySelectorAll('a'));
     this.iframe = document.querySelector('iframe');
+    this.controls = Array.prototype.slice.call(document.querySelectorAll('.ad__controls button'));
   }
 
   _bindEvents() {
@@ -78,6 +81,12 @@ class Preview {
     for (var i = 0; i < this.links.length; i++) {
       if (this.links[i] && this.links[i].href) {
         this.links[i].addEventListener('click', this._onClick);
+      }
+    }
+
+    for (var j = 0; j < this.controls.length; j++) {
+      if (this.controls[j]) {
+        this.controls[j].addEventListener('click', this._onClick);
       }
     }
   }
@@ -95,45 +104,130 @@ class Preview {
       // Left
       case 37:
         e.preventDefault();
-        this.iframe.src = this._prevFormat(this.links).href;
-        if (this.currentFormat === -1) {
+        this.currentFormat--;
+        if (this.currentFormat < 0) {
           this.currentFormat = this.links.length - 1;
         }
-      break;
+        this._loadFormat({ target: this.links[this.currentFormat] });
+        break;
       // Right
       case 39:
         e.preventDefault();
-        this.iframe.src = this._nextFormat(this.links).href;
-        if (this.currentFormat === this.links.length) {
+        this.currentFormat++;
+        if (this.currentFormat >= this.links.length) {
           this.currentFormat = 0;
         }
-      break;
+        this._loadFormat({ target: this.links[this.currentFormat] });
+        break;
     }
   }
 
   _onClick(e) {
     e.preventDefault();
-    this._loadFormat(e);
+    if (e.target && e.target.classList) {
+      if (e.target.classList.contains('ad__control--restart')) {
+        this._restartAnimation();
+      } else if (e.target.classList.contains('ad__control--pause')) {
+        this._pauseAnimation();
+      } else if (e.target.classList.contains('ad__control--resume')) {
+        this._resumeAnimation();
+      } else if (e.target.classList.contains('asset-link')) {
+        this._loadFormat(e);
+      }
+    }
+  }
+
+  _restartAnimation() {
+    if (this.iframe && this.iframe.src) {
+      const src = this.iframe.src;
+      this.iframe.src = '';
+      this.iframe.src = src;
+      const pauseBtn = document.querySelector('.ad__control--pause');
+      if (pauseBtn) {
+        pauseBtn.style.display = '';
+      }
+      // Hide resume button
+      const resumeBtn = document.querySelector('.ad__control--resume');
+      if (resumeBtn) {
+        resumeBtn.style.display = 'none';
+      }
+    }
+  }
+
+  _pauseAnimation() {
+    if (this.iframe && this.iframe.contentWindow && this.iframe.contentWindow.gsap) {
+      const tl = this.iframe.contentWindow.gsap.globalTimeline;
+      if (tl) {
+        tl.pause();
+        // Show resume button again
+        const resumeBtn = document.querySelector('.ad__control--resume');
+        if (resumeBtn) {
+          resumeBtn.style.display = '';
+        }
+        // Hide pause button
+        const pauseBtn = document.querySelector('.ad__control--pause');
+        if (pauseBtn) {
+          pauseBtn.style.display = 'none';
+        }
+      }
+    }
+  }
+
+  _resumeAnimation() {
+    if (this.iframe && this.iframe.contentWindow && this.iframe.contentWindow.gsap) {
+      const tl = this.iframe.contentWindow.gsap.globalTimeline;
+      if (tl) {
+        tl.resume();
+        // Show pause button again
+        const pauseBtn = document.querySelector('.ad__control--pause');
+        if (pauseBtn) {
+          pauseBtn.style.display = '';
+        }
+        // Hide resume button
+        const resumeBtn = document.querySelector('.ad__control--resume');
+        if (resumeBtn) {
+          resumeBtn.style.display = 'none';
+        }
+      }
+    }
   }
 
   _loadFormat(e) {
     if (e.target && e.target.href && this.iframe) {
-      gsap.set('.iframe iframe', {autoAlpha: 0});
+      gsap.set('.ad iframe', {autoAlpha: 0});
 
       // Set iframe src and wait for load event
       this.iframe.src = e.target.href;
       this.iframe.onload = () => {
-        if (this.iframe.contentWindow && this.iframe.contentWindow.document) {
+        try {
+          if (this.iframe.contentWindow && this.iframe.contentWindow.document) {
 
-          this.iframe.style.width = e.target.dataset.width + 'px';
-          this.iframe.style.height = e.target.dataset.height + 'px';
+            this.iframe.style.width = e.target.dataset.width + 'px';
+            this.iframe.style.height = e.target.dataset.height + 'px';
 
-          var banner = this.iframe.contentWindow.document.querySelector('#banner');
-          if (banner) {
-            gsap.to('.iframe iframe', {duration: 1, autoAlpha: 1});
+            var banner = this.iframe.contentWindow.document.querySelector('#banner');
+            if (banner) {
+              gsap.to('.ad iframe', {duration: 1, autoAlpha: 1});
+            }
+
+            // Show banner size below iframe
+            let adFormat = document.querySelector('.ad__format');
+            adFormat.textContent = `${e.target.dataset.width} x ${e.target.dataset.height}`;
+          } else {
+            this._showAdBlockMessage();
           }
+        } catch (err) {
+          this._showAdBlockMessage();
         }
       };
+    }
+  }
+
+  _showAdBlockMessage() {
+    const container = document.querySelector('.ad');
+    container.innerHTML = '<div class="adblock-message"><h1>Ooops...</h1><h2>AdBlocker Detected</h2><p>It seems that an ad blocker is preventing the preview from loading. Please disable your ad blocker for this page to view the banner previews.</p></div>';
+    if (this.iframe) {
+      this.iframe.style.display = 'none';
     }
   }
 }
