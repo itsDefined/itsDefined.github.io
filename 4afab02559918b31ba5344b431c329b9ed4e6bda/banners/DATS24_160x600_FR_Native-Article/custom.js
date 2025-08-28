@@ -58,10 +58,8 @@ var creative = (function(window, document, undefined) {
 
         gsap.to('#preload', {duration: 1, autoAlpha:0})
 
-        var frame1a = new SplitText(".frame--1-a", { type: "words" });
-        var frame1b = new SplitText(".frame--1-b", { type: "words" });
+        var frame1 = new SplitText(".frame--1", { type: "words" });
         var frame2 = new SplitText(".frame--2", { type: "words" });
-        var frame3 = new SplitText(".frame--3", { type: "words" });
         var endframe = new SplitText(".frame--endframe", { type: "words" });
 
         creative.tl = gsap.timeline({
@@ -70,28 +68,22 @@ var creative = (function(window, document, undefined) {
         })
 
         .addLabel('frame1')
-        .from(frame1a.words, {duration: .5, stagger:.05, yPercent: 100, autoAlpha: 0, ease: "back.out"}, 'frame1')
-
-        .from('.card__wrap', {duration: settings.duration, delay: .5, x: settings.x, scale: settings.scale, y: settings.yPercent, ease: "back.inOut(.75, 1)"}, 'frame1')
-        .from('.card', {duration: settings.duration, delay: .5, rotationY: settings.rotationY, rotationZ: settings.rotationZ, rotationX: settings.rotationX, perspective: settings.perspective, ease: "sine.out", onStart: function(){gsap.fromTo('.card', {duration: 1, filter: "blur(2px)"}, {filter: "blur(0px)"})}}, 'frame1')
-        .from(frame1b.words, {duration: .5, stagger:.05, yPercent: 100, autoAlpha: 0, ease: "back.out", delay: settings.frame1bDelay}, '<')
-
-        .to(frame1a.words, {duration: .5, stagger:-.05, xPercent: 100, autoAlpha: 0, ease: "back.inOut"}, '+=.5')
-        .to(frame1b.words, {duration: .5, stagger:-.05, xPercent: 100, autoAlpha: 0, ease: "back.inOut"}, '<')
+        .from(frame1.words, {duration: .5, stagger:.05, yPercent: 100, autoAlpha: 0, ease: "back.out"}, 'frame1')
 
 
-        .from(frame2.words, {duration: .5, stagger:.05, yPercent: 100, autoAlpha: 0, ease: "back.out"})
+        .from('.card__wrap', {duration: settings.duration, delay: 1, x: settings.x, scale: settings.scale, y: settings.yPercent, ease: "back.inOut(.75, 1)"}, 'frame1')
+        .from('.card', {duration: settings.duration, delay: 1, rotationY: settings.rotationY, rotationZ: settings.rotationZ, rotationX: settings.rotationX, perspective: settings.perspective, ease: "sine.out", onStart: function(){gsap.fromTo('.card', {duration: 1, filter: "blur(2px)"}, {filter: "blur(0px)"})}}, 'frame1')
+      
+        .to(frame1.words, {duration: 1, autoAlpha: 0, ease: "back.inOut"}, '-=1.25')
+
+
+        .from(frame2.words, {duration: .5, stagger:.05, yPercent: 100, autoAlpha: 0, ease: "back.out"}, '-=.6')
         .set('.card__wrap', {x: settings.x, y: settings.endframeCardY})
 
-        .addLabel('frame3', '=+.5')
-        .from(frame3.words, {duration: .5, stagger:.05, yPercent: 100, autoAlpha: 0, ease: "back.out"}, 'frame3')
-
-        .addLabel('endframe', '=+1')
-
+        .addLabel('endframe', '=+3')
         .to(frame2.words, {duration: .5, stagger:-.05, xPercent: 100, autoAlpha: 0, ease: "back.inOut"}, 'endframe')
-        .to(frame3.words, {duration: .5, stagger:-.05, xPercent: 100, autoAlpha: 0, ease: "back.inOut"}, 'endframe =+.1')
-
         .from(endframe.words, {duration: .5, stagger:.05, yPercent: 100, autoAlpha: 0, ease: "back.out"}, '>')
+        .to('#banner', {duration: .5, "--banner-bg": "#9CC923"}, '<')
 
         .to('.card__wrap', {duration: .75, xPercent: -150, ease: "back.out(.75, 1)"}, '<')
         .from('.shadow', {duration: .75, autoAlpha: 0}, '<')
