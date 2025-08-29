@@ -3,8 +3,6 @@
 class Preview {
   constructor() {
     this.currentFormat = 0;
-    this._bindSelectors();
-    this._bindEvents();
     this._getData();
     this._callTooltip();
   }
@@ -59,9 +57,9 @@ class Preview {
       languageDiv.appendChild(ul);
     });
 
-    // Re-bind selectors and events after links are added
     this._bindSelectors();
     this._bindEvents();
+
     if (this.links.length > 0) {
       this._loadFormat({target: this.links[0]});
     }
@@ -93,7 +91,6 @@ class Preview {
   }
 
   _nextFormat(e) {
-    e.preventDefault();
     this.currentFormat++;
     if (this.currentFormat >= this.links.length) {
       this.currentFormat = 0;
@@ -102,7 +99,6 @@ class Preview {
   }
 
   _prevFormat(e) {
-    e.preventDefault();
     this.currentFormat--;
     if (this.currentFormat < 0) {
       this.currentFormat = this.links.length - 1;
@@ -125,19 +121,41 @@ class Preview {
 
   _onClick(e) {
     e.preventDefault();
+    console.log('clicked');
     if (e.target && e.target.classList) {
       if (e.target.classList.contains('ad__control--restart')) {
         this._restartAnimation();
       } else if (e.target.classList.contains('ad__control--pause')) {
         this._pauseAnimation();
+        this._togglePauseResumeButtons();
       } else if (e.target.classList.contains('ad__control--resume')) {
         this._resumeAnimation();
+        this._togglePauseResumeButtons();
       } else if (e.target.classList.contains('ad__control--next')) {
         this._nextFormat(e);
+        this._togglePauseResumeButtons();
       } else if (e.target.classList.contains('ad__control--prev')) {
         this._prevFormat(e);
+        this._togglePauseResumeButtons();
       } else if (e.target.classList.contains('asset-link')) {
         this._loadFormat(e);
+        this._togglePauseResumeButtons();
+      }
+    }
+  }
+
+  _togglePauseResumeButtons() {
+    const pauseBtn = document.querySelector('.ad__control--pause');
+    const resumeBtn = document.querySelector('.ad__control--resume');
+    if (pauseBtn && resumeBtn) {
+      if (pauseBtn.style.display !== "none") {
+        pauseBtn.style.display = "none";
+        resumeBtn.style.display = "";
+        console.log('paused');
+      } else {
+        resumeBtn.style.display = "none";
+        pauseBtn.style.display = "";
+        console.log('resumed');
       }
     }
   }
@@ -147,33 +165,15 @@ class Preview {
       const src = this.iframe.src;
       this.iframe.src = '';
       this.iframe.src = src;
-      const pauseBtn = document.querySelector('.ad__control--pause');
-      if (pauseBtn) {
-        pauseBtn.style.display = '';
-      }
-      // Hide resume button
-      const resumeBtn = document.querySelector('.ad__control--resume');
-      if (resumeBtn) {
-        resumeBtn.style.display = 'none';
-      }
     }
   }
 
   _pauseAnimation() {
+    console.log("test");
     if (this.iframe && this.iframe.contentWindow && this.iframe.contentWindow.gsap) {
       const tl = this.iframe.contentWindow.gsap.globalTimeline;
       if (tl) {
         tl.pause();
-        // Show resume button again
-        const resumeBtn = document.querySelector('.ad__control--resume');
-        if (resumeBtn) {
-          resumeBtn.style.display = '';
-        }
-        // Hide pause button
-        const pauseBtn = document.querySelector('.ad__control--pause');
-        if (pauseBtn) {
-          pauseBtn.style.display = 'none';
-        }
       }
     }
   }
@@ -183,16 +183,6 @@ class Preview {
       const tl = this.iframe.contentWindow.gsap.globalTimeline;
       if (tl) {
         tl.resume();
-        // Show pause button again
-        const pauseBtn = document.querySelector('.ad__control--pause');
-        if (pauseBtn) {
-          pauseBtn.style.display = '';
-        }
-        // Hide resume button
-        const resumeBtn = document.querySelector('.ad__control--resume');
-        if (resumeBtn) {
-          resumeBtn.style.display = 'none';
-        }
       }
     }
   }
@@ -223,6 +213,7 @@ class Preview {
             // Show banner size below iframe
             let adFormat = document.querySelector('.ad__format');
             adFormat.textContent = `${e.target.dataset.width} x ${e.target.dataset.height}`;
+
           } else {
             this._showAdBlockMessage();
           }

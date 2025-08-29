@@ -93,7 +93,7 @@ body {
     display: flex;
     gap: 10px;
 }
-.ad .ad__controls .ad__control {
+.ad .ad__control {
     all: unset;
     background: #f0f0f0;
     border: 1px solid #ccc;
@@ -102,6 +102,10 @@ body {
     cursor: pointer;
     font-size: 12px;
     padding: 5px 10px;
+}
+.ad__control:hover {
+  background: #e0e0e0;
+  color: #6a5acd;
 }
 .ad__control i {
   pointer-events: none;
