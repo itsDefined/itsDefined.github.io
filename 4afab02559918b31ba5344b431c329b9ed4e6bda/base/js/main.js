@@ -197,12 +197,17 @@ class Preview {
     }
   }
 
+  _antiCache(url) {
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}nocache=${new Date().getTime()}`;
+  }
+
   _loadFormat(e) {
     if (e.target && e.target.href && this.iframe) {
       gsap.set('.ad iframe', {autoAlpha: 0});
 
       // Set iframe src and wait for load event
-      this.iframe.src = e.target.href;
+      this.iframe.src = this._antiCache(e.target.href);
       this.iframe.onload = () => {
         try {
           if (this.iframe.contentWindow && this.iframe.contentWindow.document) {
