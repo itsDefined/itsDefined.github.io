@@ -6,6 +6,7 @@ class Preview {
     this._bindSelectors();
     this._bindEvents();
     this._getData();
+    this._callTooltip();
   }
 
   _getData(){
@@ -69,7 +70,7 @@ class Preview {
   _bindSelectors() {
     this.links = Array.prototype.slice.call(document.querySelectorAll('a'));
     this.iframe = document.querySelector('iframe');
-    this.controls = Array.prototype.slice.call(document.querySelectorAll('.ad__controls button'));
+    this.controls = Array.prototype.slice.call(document.querySelectorAll('.ad__control'));
   }
 
   _bindEvents() {
@@ -91,33 +92,33 @@ class Preview {
     }
   }
 
-  _nextFormat(array) {
-    return array[this.currentFormat++];
+  _nextFormat(e) {
+    e.preventDefault();
+    this.currentFormat++;
+    if (this.currentFormat >= this.links.length) {
+      this.currentFormat = 0;
+    }
+    this._loadFormat({ target: this.links[this.currentFormat] });
   }
 
-  _prevFormat(array) {
-    return array[this.currentFormat--];
+  _prevFormat(e) {
+    e.preventDefault();
+    this.currentFormat--;
+    if (this.currentFormat < 0) {
+      this.currentFormat = this.links.length - 1;
+    }
+    this._loadFormat({ target: this.links[this.currentFormat] });
   }
 
   _onKeyDown(e) {
     switch (e.keyCode) {
       // Left
       case 37:
-        e.preventDefault();
-        this.currentFormat--;
-        if (this.currentFormat < 0) {
-          this.currentFormat = this.links.length - 1;
-        }
-        this._loadFormat({ target: this.links[this.currentFormat] });
+        this._prevFormat(e);
         break;
       // Right
       case 39:
-        e.preventDefault();
-        this.currentFormat++;
-        if (this.currentFormat >= this.links.length) {
-          this.currentFormat = 0;
-        }
-        this._loadFormat({ target: this.links[this.currentFormat] });
+        this._nextFormat(e);
         break;
     }
   }
@@ -131,6 +132,10 @@ class Preview {
         this._pauseAnimation();
       } else if (e.target.classList.contains('ad__control--resume')) {
         this._resumeAnimation();
+      } else if (e.target.classList.contains('ad__control--next')) {
+        this._nextFormat(e);
+      } else if (e.target.classList.contains('ad__control--prev')) {
+        this._prevFormat(e);
       } else if (e.target.classList.contains('asset-link')) {
         this._loadFormat(e);
       }
@@ -228,6 +233,16 @@ class Preview {
     container.innerHTML = '<div class="adblock-message"><h1>Ooops...</h1><h2>AdBlocker Detected</h2><p>It seems that an ad blocker is preventing the preview from loading. Please disable your ad blocker for this page to view the banner previews.</p></div>';
     if (this.iframe) {
       this.iframe.style.display = 'none';
+    }
+  }
+
+  _callTooltip() {
+    console.log('call tooltip');
+    const tooltip = document.querySelector('.tooltip');
+    if (tooltip) {
+      gsap.from(tooltip, {duration: 1, autoAlpha: 0, y: 100, ease: "back.out", delay: 1, onComplete: () => {
+        gsap.to(tooltip, {duration: .5, autoAlpha: 0, delay: 5});
+      }});
     }
   }
 }

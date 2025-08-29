@@ -20,15 +20,23 @@
       </div>
       
       <div class="ad">
-        <iframe src="banners/DATS24_300x600_NL_Native-Article/index.html"></iframe>
+        <div class="ad__scene">
+            <button class="ad__control ad__control--prev"><i class="bi bi-arrow-left-short"></i></button>
+            <iframe class="ad__source" src="banners/DATS24_300x600_NL_Native-Article/index.html"></iframe>
+            <button class="ad__control ad__control--next"><i class="bi bi-arrow-right-short"></i></button>
+        </div>
         <div class="ad__format"></div>
         <div class="ad__controls">
           <button class="ad__control ad__control--restart"><i class="bi bi-arrow-clockwise"></i></button>
           <button class="ad__control ad__control--pause"><i class="bi bi-pause-fill"></i></button>
           <button class="ad__control ad__control--resume" style="display: none;"><i class="bi bi-play-fill"></i></button>
         </div>
-      </div>
-      
+
+        <div class="tooltip">
+          <span>Tip: Use the <i class="bi bi-arrow-left-square-fill"></i> or <i class="bi bi-arrow-right-square-fill"></i> arrow keys on your keypad to browse through the banner sizes. 🚀</span>
+        </div>
+      </div>      
+
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>

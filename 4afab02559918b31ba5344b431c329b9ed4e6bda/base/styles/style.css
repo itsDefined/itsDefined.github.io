@@ -55,7 +55,7 @@ body {
   padding: 0 0 10px;
 }
 .sidebar ul li a {
-  color: #d36135;
+  color: #6a5acd;
   font-size: 12px;
 }
 .sidebar ul li a:hover {
@@ -78,7 +78,13 @@ body {
     flex-flow: column nowrap;
     gap: 10px;
 }
-.ad iframe {
+.ad .ad__scene {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.ad .ad__source {
   border: 0;
   height: 100%;
   width: 100%;
@@ -123,3 +129,18 @@ body {
     font-size: 18px;
     margin: 5px 0;
 }
+.tooltip {
+  background: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background: linear-gradient(135deg, #6a5acd, #ff69b4);
+  position: absolute;
+  bottom: 10px;
+}
+
