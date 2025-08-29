@@ -3,15 +3,16 @@ var settings = {
 	debug: false,
 }
 var settings = {
-    duration: 2,
-    rotationY:-20,
-    rotationZ:-5,
+    duration: 1.5,
+    rotationY: -0,
+    rotationZ:-0,
     rotationX:-0,
-    yPercent: -150,
+    yPercent: -100,
     perspective: 0,
-    x: 570,
+    x: 600,
     scale: 1.5,
-    endframeCardY: 15,
+    endframeCardY: -15,
+    endframeCardX: -160,
     frame1bDelay: 1,
 }
 // INCLUDE LIBS HERE IF REQUIRED
@@ -85,7 +86,7 @@ var creative = (function(window, document, undefined) {
         .from(endframe.words, {duration: .5, stagger:.05, yPercent: 100, autoAlpha: 0, ease: "back.out"}, '>')
         .to('#banner', {duration: .5, "--banner-bg": "#9CC923"}, '<')
 
-        .to('.card__wrap', {duration: .75, xPercent: -150, ease: "back.out(.75, 1)"}, '<')
+        .to('.card__wrap', {duration: .75, xPercent: settings.endframeCardX, ease: "back.out(.75, 1)"}, '<')
         .from('.shadow', {duration: .75, autoAlpha: 0}, '<')
     },
 

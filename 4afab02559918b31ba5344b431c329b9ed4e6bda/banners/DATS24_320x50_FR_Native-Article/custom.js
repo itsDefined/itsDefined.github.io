@@ -3,13 +3,13 @@ var settings = {
 	debug: false,
 }
 var settings = {
-    duration: 1,
+    duration: 1.5,
     rotationY:-20,
     rotationZ:-7,
     rotationX:-0,
     yPercent: 10,
     perspective: 0,
-    x: 250,
+    x: 320,
     scale: 1.25,
     frame2Threshold: '-=1.5'
 }
@@ -80,9 +80,9 @@ var creative = (function(window, document, undefined) {
         .addLabel('frame1')
         .from(frame1.words, {duration: .5, stagger:.05, yPercent: 50, autoAlpha: 0, ease: "back.out"}, 'frame1')
 
-        .from('.card__wrap', {duration: settings.duration, x: settings.x, scale: settings.scale, y: settings.yPercent,  delay: 2,  ease: "back.out(1.75, 2)"}, 'frame1')
-        .from('.card', {duration: settings.duration, rotationY: settings.rotationY, rotationZ: settings.rotationZ, rotationX: settings.rotationX, perspective: settings.perspective, ease: "sine.out", delay: 2, onStart: function(){gsap.fromTo('.card', {duration: 1, filter: "blur(2px)"}, {filter: "blur(0px)"})}}, 'frame1')
-        .from('.shadow', {duration: settings.duration, autoAlpha: 0, delay: 2}, 'frame1')
+        .from('.card__wrap', {duration: settings.duration, x: settings.x, scale: settings.scale, y: settings.yPercent,  delay: 1.5,  ease: "back.out(1.75, 2)"}, 'frame1')
+        .from('.card', {duration: settings.duration, rotationY: settings.rotationY, rotationZ: settings.rotationZ, rotationX: settings.rotationX, perspective: settings.perspective, ease: "sine.out", delay: 1.5, onStart: function(){gsap.fromTo('.card', {duration: 1, filter: "blur(2px)"}, {filter: "blur(0px)"})}}, 'frame1')
+        .from('.shadow', {duration: settings.duration, autoAlpha: 0, delay: 1.5}, 'frame1')
         .to('.frame--1', {duration: .5, autoAlpha: 0})
 
         .addLabel('frame2', settings.frame2Threshold)
